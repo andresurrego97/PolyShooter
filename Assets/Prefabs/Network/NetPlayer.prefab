@@ -114,9 +114,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NetPlayer
   netCharacterController: {fileID: 3567115125385354992}
+  meshRenderer: {fileID: 7787367225820927794}
   netBall: {fileID: 4435581964522351584, guid: 85b5d8c9d38a73340b3c2b65d8ae1b5c, type: 3}
   netPhysxBall: {fileID: 2530263838264044425, guid: 52e1e8c31de6dcb4b822f5b32e9a2502, type: 3}
   ballRoot: {fileID: 1427396723182643171}
+  _SpawnedProjectile: 0
 --- !u!1 &5858397027114387003
 GameObject:
   m_ObjectHideFlags: 0

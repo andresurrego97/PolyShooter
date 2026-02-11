@@ -6,12 +6,31 @@ public class NetPlayer : NetworkBehaviour
     [SerializeField] private NetworkCharacterController netCharacterController;
 
     [Space]
+    [SerializeField] private MeshRenderer meshRenderer;
+    private Material material;
+
+    [Space]
     [SerializeField] private NetBall netBall;
     [SerializeField] private NetPhysxBall netPhysxBall;
     [SerializeField] private Transform ballRoot;
 
     private Vector3 direction = Vector3.zero;
     private NetworkButtons lastButtons;
+
+    private ChangeDetector changeDetector;
+    [Networked] public bool SpawnedProjectile { get; set; }
+
+    private void Awake()
+    {
+        material = Instantiate(meshRenderer.material);
+        material.color = Color.grey;
+        meshRenderer.material = material;
+    }
+
+    public override void Spawned()
+    {
+        changeDetector = GetChangeDetector(ChangeDetector.Source.SimulationState);
+    }
 
     public override void FixedUpdateNetwork()
     {
@@ -46,9 +65,10 @@ public class NetPlayer : NetworkBehaviour
                         // Initialize the Ball before synchronizing it
                         o.GetComponent<NetBall>().Init();
                     });
-            }
 
-            if (data.buttons.WasPressed(lastButtons, NetInputData.Fire2))
+                SpawnedProjectile = !SpawnedProjectile;
+            }
+            else if (data.buttons.WasPressed(lastButtons, NetInputData.Fire2))
             {
                 Runner.Spawn(
                     netPhysxBall,
@@ -60,9 +80,26 @@ public class NetPlayer : NetworkBehaviour
                         // Initialize the Ball before synchronizing it
                         o.GetComponent<NetPhysxBall>().Init(10 * ballRoot.forward);
                     });
+
+                SpawnedProjectile = !SpawnedProjectile;
             }
 
             lastButtons = data.buttons;
         }
+    }
+
+    public override void Render()
+    {
+        foreach (string change in changeDetector.DetectChanges(this))
+        {
+            switch (change)
+            {
+                case nameof(SpawnedProjectile):
+                    material.color = Color.white;
+                    break;
+            }
+        }
+
+        material.color = Color.Lerp(material.color, Color.grey, Time.deltaTime * 5);
     }
 }
