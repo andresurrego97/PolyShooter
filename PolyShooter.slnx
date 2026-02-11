@@ -8,10 +8,10 @@
   <Project Path="UniTask.TextMeshPro.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
   <Project Path="PhotonFusion_Host.csproj" />
+  <Project Path="PhotonFusion_Shared.csproj" />
   <Project Path="UniTask.Addressables.csproj" />
   <Project Path="Unity.Fusion.CodeGen.csproj" />
   <Project Path="UniTask.Editor.csproj" />
-  <Project Path="PhotonFusion_Shared.csproj" />
   <Project Path="UniTask.DOTween.csproj" />
   <Project Path="Fusion.Addons.Physics.Editor.csproj" />
 </Solution>

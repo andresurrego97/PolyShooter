@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 712969579624497850}
   - component: {fileID: 5441866164028740053}
   - component: {fileID: 629443560232013930}
+  - component: {fileID: -534776643604603348}
   m_Layer: 0
   m_Name: Player Character
   m_TagString: Untagged
@@ -55,6 +56,7 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 4681800820518619264}
+  - {fileID: -534776643604603348}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &4681800820518619264
 MonoBehaviour:
@@ -178,3 +180,17 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-534776643604603348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1924841841254453276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc34e51f81f0aed479bf9f304e532906, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PhotonFusion_Shared::PlayerMovement
+  _controller: {fileID: 5441866164028740053}
+  PlayerSpeed: 2
