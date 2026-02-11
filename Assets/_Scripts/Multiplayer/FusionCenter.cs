@@ -18,11 +18,14 @@ public class FusionCenter : MonoBehaviour, INetworkRunnerCallbacks
     private NetInputData data = new();
 
     private bool _fire1;
+    private bool _fire2;
     private bool _jump;
 
-    private const string _Jump = "Jump";
     private const string _Vertical = "Vertical";
     private const string _Horizontal = "Horizontal";
+    private const string _Fire1 = "Fire1";
+    private const string _Fire2 = "Fire2";
+    private const string _Jump = "Jump";
 
     public void StartHost()
     {
@@ -81,7 +84,8 @@ public class FusionCenter : MonoBehaviour, INetworkRunnerCallbacks
 
     private void Update()
     {
-        _fire1 |= Input.GetMouseButton(0);
+        _fire1 |= Input.GetButton(_Fire1);
+        _fire2 |= Input.GetButton(_Fire2);
         _jump |= Input.GetButton(_Jump);
     }
 
@@ -91,9 +95,12 @@ public class FusionCenter : MonoBehaviour, INetworkRunnerCallbacks
         data.horizontal = Input.GetAxis(_Horizontal);
 
         data.buttons.Set(NetInputData.Fire1, _fire1);
-        data.buttons.Set(NetInputData.Jump, _jump);
-
         _fire1 = false;
+
+        data.buttons.Set(NetInputData.Fire2, _fire2);
+        _fire2 = false;
+        
+        data.buttons.Set(NetInputData.Jump, _jump);
         _jump = false;
 
         input.Set(data);

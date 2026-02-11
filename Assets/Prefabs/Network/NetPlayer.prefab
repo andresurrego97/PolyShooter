@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 3669569462496110905}
   - component: {fileID: 6236942109307681826}
   - component: {fileID: 3567115125385354992}
-  - component: {fileID: -5393865738498656809}
   - component: {fileID: 7503873644698180366}
+  - component: {fileID: -5393865738498656809}
   m_Layer: 0
   m_Name: NetPlayer
   m_TagString: Untagged
@@ -76,21 +76,6 @@ MonoBehaviour:
   braking: 10
   maxSpeed: 2
   rotationSpeed: 15
---- !u!114 &-5393865738498656809
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2172236470770237193}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25ff3fd0006f4f044a3c4b37da9a833d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NetPlayer
-  netCharacterController: {fileID: 3567115125385354992}
-  netBall: {fileID: 4435581964522351584, guid: 85b5d8c9d38a73340b3c2b65d8ae1b5c, type: 3}
-  ballRoot: {fileID: 1427396723182643171}
 --- !u!143 &7503873644698180366
 CharacterController:
   m_ObjectHideFlags: 0
@@ -116,6 +101,22 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-5393865738498656809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2172236470770237193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25ff3fd0006f4f044a3c4b37da9a833d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NetPlayer
+  netCharacterController: {fileID: 3567115125385354992}
+  netBall: {fileID: 4435581964522351584, guid: 85b5d8c9d38a73340b3c2b65d8ae1b5c, type: 3}
+  netPhysxBall: {fileID: 2530263838264044425, guid: 52e1e8c31de6dcb4b822f5b32e9a2502, type: 3}
+  ballRoot: {fileID: 1427396723182643171}
 --- !u!1 &5858397027114387003
 GameObject:
   m_ObjectHideFlags: 0
