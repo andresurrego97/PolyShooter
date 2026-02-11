@@ -18,7 +18,7 @@ public class NetPlayer : NetworkBehaviour
     private NetworkButtons lastButtons;
 
     private ChangeDetector changeDetector;
-    [Networked] public bool SpawnedProjectile { get; set; }
+    [Networked, HideInInspector] public bool SpawnedProjectile { get; set; }
 
     private void Awake()
     {
@@ -101,5 +101,34 @@ public class NetPlayer : NetworkBehaviour
         }
 
         material.color = Color.Lerp(material.color, Color.grey, Time.deltaTime * 5);
+    }
+
+    private void Update()
+    {
+        if (Object.HasInputAuthority && Input.GetKeyDown(KeyCode.H))
+        {
+            RPC_SendMessage("Hi");
+        }
+    }
+
+    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
+    public void RPC_SendMessage(string message, RpcInfo info = default)
+    {
+        RPC_RelayMessage(message, info.Source);
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
+    public void RPC_RelayMessage(string message, PlayerRef messageSource)
+    {
+        if (messageSource == Runner.LocalPlayer)
+        {
+            message = $"You said: {message}";
+        }
+        else
+        {
+            message = $"Player #{messageSource.AsIndex} said: {message}";
+        }
+
+        Debug.LogWarning(message);
     }
 }

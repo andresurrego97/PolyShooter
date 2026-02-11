@@ -178,7 +178,7 @@ public class FusionCenter : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
     {
-
+        Debug.Log("Shutdown reason: " + shutdownReason);
     }
 
     public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message)
