@@ -4,10 +4,7 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes:
-  - enabled: 1
-    path: Assets/_Scenes/Playground.unity
-    guid: 707acc8dffb72b144bb1ffbe1c965f3d
+  m_Scenes: []
   m_configObjects:
     com.unity.dt.app-ui: {fileID: 11400000, guid: 99f9c9493070a9d4c979a8fec7c5a8d3, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: 94c1aa60679fe5d4082bffe1b29652c1, type: 2}

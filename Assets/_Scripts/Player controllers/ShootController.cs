@@ -15,15 +15,15 @@ public class ShootController : MonoBehaviour
         Gizmos.DrawLine(root.position, root.position + root.forward * hitScanRange);
     }
 
-    private void OnEnable()
-    {
-        PlayerInputActions.OnFireInput += OnFire;
-    }
+    //private void OnEnable()
+    //{
+    //    PlayerInputActions.OnFireInput += OnFire;
+    //}
 
-    private void OnDisable()
-    {
-        PlayerInputActions.OnFireInput -= OnFire;
-    }
+    //private void OnDisable()
+    //{
+    //    PlayerInputActions.OnFireInput -= OnFire;
+    //}
 
     private void OnFire()
     {
