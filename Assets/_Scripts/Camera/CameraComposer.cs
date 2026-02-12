@@ -21,6 +21,9 @@ public class CameraComposer : MonoBehaviour
 
     private void Update()
     {
+        if (target == null)
+            return;
+
         _deadZone = deadZone * 0.5f;
 
         targetToViewport = cam.WorldToViewportPoint(target.position);

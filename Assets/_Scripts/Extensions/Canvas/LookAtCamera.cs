@@ -10,7 +10,7 @@ public class LookAtCamera : MonoBehaviour
         cam = Camera.main.transform;
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         transform.rotation = Quaternion.LookRotation(transform.position - cam.position, cam.up);
     }

@@ -3,56 +3,29 @@ using UnityEngine;
 
 public class NetPlayerMovement : NetworkBehaviour
 {
-    [SerializeField] private CharacterController _controller;
+    [SerializeField] private Transform root;
 
     [Space]
     [SerializeField] private float PlayerSpeed = 2f;
-    [SerializeField] private float JumpForce = 5f;
-    //[SerializeField] private float GravityValue = -9.81f;
 
-    private bool _jumpPressed;
-    private Vector3 _velocity;
     private Vector3 move;
 
     public override void Spawned()
     {
         if (HasStateAuthority)
         {
-            CameraComposer.instance.target = transform;
-        }
-    }
-
-    void Update()
-    {
-        if (Input.GetButtonDown("Jump"))
-        {
-            _jumpPressed = true;
+            CameraComposer.instance.target = root;
         }
     }
 
     public override void FixedUpdateNetwork()
     {
-        // FixedUpdateNetwork is only executed on the StateAuthority
-
-        if (_controller.isGrounded)
-        {
-            _velocity = new Vector3(0, -1, 0);
-        }
-
-        move = PlayerSpeed * Runner.DeltaTime * new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-
-        _velocity.y += /*GravityValue*/ Physics.gravity.y * Runner.DeltaTime;
-        if (_jumpPressed && _controller.isGrounded)
-        {
-            _velocity.y += JumpForce;
-        }
-        _controller.Move(move + _velocity * Runner.DeltaTime);
+        move = PlayerSpeed * Runner.DeltaTime * new Vector3(Input.GetAxis(Inputs._Horizontal), 0, Input.GetAxis(Inputs._Vertical));
 
         if (move != Vector3.zero)
         {
-            gameObject.transform.forward = move;
+            root.forward = move;
+            root.Translate(move * Runner.DeltaTime, Space.World);
         }
-
-        _jumpPressed = false;
     }
 }
