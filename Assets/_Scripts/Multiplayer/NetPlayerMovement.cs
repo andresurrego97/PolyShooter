@@ -24,7 +24,7 @@ public class NetPlayerMovement : NetworkBehaviour
 
         if (move != Vector3.zero)
         {
-            root.forward = move;
+            //root.forward = move;
             root.Translate(move * Runner.DeltaTime, Space.World);
         }
     }

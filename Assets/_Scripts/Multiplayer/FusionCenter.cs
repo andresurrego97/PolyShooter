@@ -17,8 +17,13 @@ public class FusionCenter : MonoBehaviour, INetworkRunnerCallbacks
         {
             networkRunner.Spawn(
                 playerPrefab,
-                new((player.AsIndex * 3) - 7, 0, 0),
-                Quaternion.identity);
+                Vector3.zero,
+                Quaternion.identity,
+                null,
+                (runner, o) =>
+                {
+                    o.transform.GetChild(0).position = new((player.AsIndex * 3) - 7, 1, 0);
+                });
         }
     }
 
