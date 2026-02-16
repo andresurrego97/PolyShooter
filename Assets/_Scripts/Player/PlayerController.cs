@@ -12,11 +12,12 @@ public class PlayerController : /*MonoBehaviour*/ NetworkBehaviour
     [Space]
     [SerializeField] private GameObject selectedSprite;
 
+    [HideInInspector] public bool enemySelected = false;
     private float nearest;
     private float nearestEnemyDistance;
     private PlayerController prevNearestEnemy;
     private PlayerController nearestEnemy;
-    private Vector3 enemyDirection;
+    private Vector3 enemyDirection = Vector3.forward;
 
     private int selectedTweenId = 0;
 
@@ -52,9 +53,6 @@ public class PlayerController : /*MonoBehaviour*/ NetworkBehaviour
 
     private void Update()
     {
-        if (!HasStateAuthority)
-            return;
-
         CheckEnemies();
     }
 
@@ -66,35 +64,46 @@ public class PlayerController : /*MonoBehaviour*/ NetworkBehaviour
 
             foreach (KeyValuePair<Collider, PlayerController> player in circleCollider.colliders)
             {
+                if (player.Value == null)
+                {
+                    circleCollider.colliders.Remove(player.Key);
+                    continue;
+                }
+
                 nearest = Vector3.Distance(root.position, player.Value.root.position);
 
                 if (nearest < nearestEnemyDistance)
                 {
                     nearestEnemyDistance = nearest;
                     nearestEnemy = player.Value;
+                    enemySelected = true;
                 }
             }
         }
         else
         {
             nearestEnemy = null;
+            enemySelected = false;
         }
 
-        if (prevNearestEnemy != nearestEnemy)
+        if (HasStateAuthority)
         {
-            if (prevNearestEnemy != null)
-                prevNearestEnemy.SetSelected(false);
+            if (prevNearestEnemy != nearestEnemy)
+            {
+                if (prevNearestEnemy != null)
+                    prevNearestEnemy.SetSelected(false);
 
-            if (nearestEnemy != null)
-                nearestEnemy.SetSelected(true);
+                if (nearestEnemy != null)
+                    nearestEnemy.SetSelected(true);
+            }
+            prevNearestEnemy = nearestEnemy;
         }
-        prevNearestEnemy = nearestEnemy;
 
-        if (nearestEnemy != null)
+        if (enemySelected)
         {
             enemyDirection = nearestEnemy.root.position - root.position;
+            root.rotation = Quaternion.LookRotation(enemyDirection, root.up);
         }
-        root.forward = enemyDirection;
     }
 
     public void SetSelected(bool on)

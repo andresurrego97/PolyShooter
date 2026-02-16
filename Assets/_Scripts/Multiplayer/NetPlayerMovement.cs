@@ -3,12 +3,14 @@ using UnityEngine;
 
 public class NetPlayerMovement : NetworkBehaviour
 {
+    [SerializeField] private PlayerController controller;
+    [SerializeField] private CharacterController cc;
     [SerializeField] private Transform root;
 
     [Space]
-    [SerializeField] private float PlayerSpeed = 2f;
+    [SerializeField] private float PlayerSpeed = 2;
 
-    private Vector3 move;
+    private Vector3 move = Vector3.up;
 
     public override void Spawned()
     {
@@ -20,12 +22,21 @@ public class NetPlayerMovement : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
-        move = PlayerSpeed * Runner.DeltaTime * new Vector3(Input.GetAxis(Inputs._Horizontal), 0, Input.GetAxis(Inputs._Vertical));
+        move = PlayerSpeed * new Vector3(
+            Input.GetAxis(Inputs._Horizontal),
+            0,
+            Input.GetAxis(Inputs._Vertical));
 
         if (move != Vector3.zero)
         {
-            //root.forward = move;
-            root.Translate(move * Runner.DeltaTime, Space.World);
+            if (!controller.enemySelected)
+            {
+                root.rotation = Quaternion.LookRotation(move, root.up);
+            }
         }
+
+        move.y = cc.isGrounded ? 0 : Physics.gravity.y;
+
+        cc.Move(move * Runner.DeltaTime);
     }
 }

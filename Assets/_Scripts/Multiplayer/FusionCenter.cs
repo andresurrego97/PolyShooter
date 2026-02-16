@@ -22,7 +22,7 @@ public class FusionCenter : MonoBehaviour, INetworkRunnerCallbacks
                 null,
                 (runner, o) =>
                 {
-                    o.transform.GetChild(0).position = new((player.AsIndex * 3) - 7, 1, 0);
+                    o.transform.GetChild(0).position = new((player.AsIndex * 3) - 7, 1.5f, 0);
                 });
         }
     }
