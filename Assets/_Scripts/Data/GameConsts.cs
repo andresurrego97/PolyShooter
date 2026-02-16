@@ -4,3 +4,10 @@ public static class Inputs
     public const string _Vertical = "Vertical";
     public const string _Fire1 = "Fire1";
 }
+
+public enum Teams
+{
+    None,
+    TeamA,
+    TeamB
+}

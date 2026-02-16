@@ -10,29 +10,39 @@ public class NetPlayerMovement : NetworkBehaviour
     [Space]
     [SerializeField] private float PlayerSpeed = 2;
 
+    private Vector2 inputs = Vector2.zero;
     private Vector3 move = Vector3.up;
+
+    private void Awake()
+    {
+        cc.enabled = false;
+    }
 
     public override void Spawned()
     {
         if (HasStateAuthority)
-        {
-            CameraComposer.instance.target = root;
-        }
+            CameraComposer.instance.Init(root, controller.Team);
+
+        cc.enabled = true;
     }
 
     public override void FixedUpdateNetwork()
     {
-        move = PlayerSpeed * new Vector3(
-            Input.GetAxis(Inputs._Horizontal),
-            0,
-            Input.GetAxis(Inputs._Vertical));
-
-        if (move != Vector3.zero)
+        switch (controller.Team)
         {
-            if (!controller.enemySelected)
-            {
-                root.rotation = Quaternion.LookRotation(move, root.up);
-            }
+            case Teams.TeamA:
+                inputs.Set(Input.GetAxis(Inputs._Horizontal), Input.GetAxis(Inputs._Vertical));
+                break;
+            case Teams.TeamB:
+                inputs.Set(-Input.GetAxis(Inputs._Horizontal), -Input.GetAxis(Inputs._Vertical));
+                break;
+        }
+
+        move = PlayerSpeed * new Vector3(inputs.x, 0, inputs.y);
+
+        if (!controller.enemySelected && move != Vector3.zero)
+        {
+            root.rotation = Quaternion.LookRotation(move, root.up);
         }
 
         move.y = cc.isGrounded ? 0 : Physics.gravity.y;

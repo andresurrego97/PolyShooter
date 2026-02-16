@@ -1,16 +1,12 @@
 using Fusion;
-//using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RadiousColliderEvents : /*MonoBehaviour*/ NetworkBehaviour
+public class RadiousColliderEvents :  NetworkBehaviour
 {
-    //public bool HasStateAuthority;
-
-    //public Action<PlayerController> OnEnterPlayer;
-    //public Action<PlayerController> OnExitPlayer;
     public readonly Dictionary<Collider, PlayerController> colliders = new();
 
+    [SerializeField] private PlayerController controller;
     [SerializeField] private Collider thisCollider;
 
     private PlayerController otherPlayer;
@@ -21,8 +17,10 @@ public class RadiousColliderEvents : /*MonoBehaviour*/ NetworkBehaviour
             return;
 
         otherPlayer = other.GetComponentInParent<PlayerController>();
-        colliders.Add(other, otherPlayer);
-        //OnEnterPlayer?.Invoke(otherPlayer);
+
+        if (controller.Team != otherPlayer.Team)
+            colliders.Add(other, otherPlayer);
+
         otherPlayer = null;
     }
 
@@ -33,9 +31,7 @@ public class RadiousColliderEvents : /*MonoBehaviour*/ NetworkBehaviour
 
         if (colliders.ContainsKey(other))
         {
-            //otherPlayer = colliders[other];
             colliders.Remove(other);
-            //OnExitPlayer?.Invoke(otherPlayer);
             otherPlayer = null;
         }
     }

@@ -881,9 +881,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8ff3505e4c43f14cb46b10fe03d0ceb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  team: 0
   root: {fileID: 4135392840575816078}
   circleCollider: {fileID: 5328420689946135595}
+  radious: {fileID: 1160532811263769967}
   selectedSprite: {fileID: 3456722119881240380}
+  render: {fileID: 3395107030509766341}
   enemySelected: 0
 --- !u!114 &3229349285232861018
 MonoBehaviour:
@@ -1187,6 +1190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ae6026ce61f1245bf0d97fd99c6c98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ColliderEvents
+  controller: {fileID: 3436664325673269880}
   thisCollider: {fileID: 1796414586028061752}
 --- !u!1 &9064758300733908976
 GameObject:

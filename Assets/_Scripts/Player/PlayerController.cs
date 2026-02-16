@@ -2,15 +2,19 @@ using Fusion;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : /*MonoBehaviour*/ NetworkBehaviour
+public class PlayerController : NetworkBehaviour
 {
-    //public bool HasStateAuthority;
-
+    [Networked] public Teams Team { get; set; } = Teams.None;
     public Transform root;
+
     [SerializeField] private RadiousColliderEvents circleCollider;
 
     [Space]
+    [SerializeField] private GameObject radious;
     [SerializeField] private GameObject selectedSprite;
+
+    [Space]
+    [SerializeField] private MeshRenderer render;
 
     [HideInInspector] public bool enemySelected = false;
     private float nearest;
@@ -25,31 +29,30 @@ public class PlayerController : /*MonoBehaviour*/ NetworkBehaviour
     {
         selectedSprite.transform.localScale = Vector3.zero;
 
-        //if (!HasStateAuthority)
-        //    return;
-
-        //circleCollider.OnEnterPlayer += EnterPlayer;
-        //circleCollider.OnExitPlayer += ExitPlayer;
+        radious.SetActive(false);
     }
 
-    //private void OnDestroy()
-    //{
-    //    if (!HasStateAuthority)
-    //        return;
+    public void Init(Teams team)
+    {
+        Team = team;
+    }
 
-    //    circleCollider.OnEnterPlayer -= EnterPlayer;
-    //    circleCollider.OnExitPlayer -= ExitPlayer;
-    //}
+    public override void Spawned()
+    {
+        switch (Team)
+        {
+            case Teams.TeamA:
+                render.material.color = Color.orangeRed;
+                break;
 
-    //private void EnterPlayer(PlayerController enemy)
-    //{
+            case Teams.TeamB:
+                render.material.color = Color.blueViolet;
+                break;
+        }
 
-    //}
-
-    //private void ExitPlayer(PlayerController enemy)
-    //{
-
-    //}
+        if (HasStateAuthority)
+            radious.SetActive(true);
+    }
 
     private void Update()
     {
