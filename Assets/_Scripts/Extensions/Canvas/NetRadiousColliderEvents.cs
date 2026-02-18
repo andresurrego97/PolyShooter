@@ -2,21 +2,21 @@ using Fusion;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RadiousColliderEvents :  NetworkBehaviour
+public class NetRadiousColliderEvents :  NetworkBehaviour
 {
-    public readonly Dictionary<Collider, PlayerController> colliders = new();
+    public readonly Dictionary<Collider, NetPlayerController> colliders = new();
 
-    [SerializeField] private PlayerController controller;
+    [SerializeField] private NetPlayerController controller;
     [SerializeField] private Collider thisCollider;
 
-    private PlayerController otherPlayer;
+    private NetPlayerController otherPlayer;
 
     private void OnTriggerEnter(Collider other)
     {
         if (!HasStateAuthority || other == thisCollider)
             return;
 
-        otherPlayer = other.GetComponentInParent<PlayerController>();
+        otherPlayer = other.GetComponentInParent<NetPlayerController>();
 
         if (controller.Team != otherPlayer.Team)
             colliders.Add(other, otherPlayer);

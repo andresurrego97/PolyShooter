@@ -15,7 +15,9 @@ public class FusionCenter : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
-        Debug.Log("<b><color=white>OnPlayerJoined");
+        Debug.Log($"<b><color=white>OnPlayerJoined master({runner.IsSharedModeMasterClient})");
+
+        NetLobby.instance.Init(runner);
 
         if (player == networkRunner.LocalPlayer)
         {
@@ -27,7 +29,7 @@ public class FusionCenter : MonoBehaviour, INetworkRunnerCallbacks
                 (netRunner, netObject) =>
                 {
                     team = ((player.AsIndex & 1) == 0) ? Teams.TeamB : Teams.TeamA;
-                    netObject.GetComponent<PlayerController>().Init(team);
+                    netObject.GetComponent<NetPlayerController>().Init(team);
 
                     switch (team)
                     {
@@ -48,8 +50,6 @@ public class FusionCenter : MonoBehaviour, INetworkRunnerCallbacks
 #pragma warning restore UNT0006 // Incorrect message signature
     {
         Debug.Log("<b><color=white>OnConnectedToServer");
-
-        NetLobby.instance.Init(runner);
     }
 
     public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason)

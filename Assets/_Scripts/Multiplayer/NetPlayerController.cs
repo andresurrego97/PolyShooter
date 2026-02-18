@@ -2,12 +2,12 @@ using Fusion;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : NetworkBehaviour
+public class NetPlayerController : NetworkBehaviour
 {
     [Networked] public Teams Team { get; set; } = Teams.None;
     public Transform root;
 
-    [SerializeField] private RadiousColliderEvents circleCollider;
+    [SerializeField] private NetRadiousColliderEvents circleCollider;
 
     [Space]
     [SerializeField] private GameObject radious;
@@ -19,8 +19,8 @@ public class PlayerController : NetworkBehaviour
     [HideInInspector] public bool enemySelected = false;
     private float nearest;
     private float nearestEnemyDistance;
-    private PlayerController prevNearestEnemy;
-    private PlayerController nearestEnemy;
+    private NetPlayerController prevNearestEnemy;
+    private NetPlayerController nearestEnemy;
     private Vector3 enemyDirection = Vector3.forward;
 
     private int selectedTweenId = 0;
@@ -65,7 +65,7 @@ public class PlayerController : NetworkBehaviour
         {
             nearestEnemyDistance = 1000;
 
-            foreach (KeyValuePair<Collider, PlayerController> player in circleCollider.colliders)
+            foreach (KeyValuePair<Collider, NetPlayerController> player in circleCollider.colliders)
             {
                 if (player.Value == null)
                 {

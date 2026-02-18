@@ -881,7 +881,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8ff3505e4c43f14cb46b10fe03d0ceb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  team: 0
+  _Team: 0
   root: {fileID: 4135392840575816078}
   circleCollider: {fileID: 5328420689946135595}
   radious: {fileID: 1160532811263769967}

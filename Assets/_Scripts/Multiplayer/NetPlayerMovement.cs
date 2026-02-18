@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class NetPlayerMovement : NetworkBehaviour
 {
-    [SerializeField] private PlayerController controller;
+    [SerializeField] private NetPlayerController controller;
     [SerializeField] private CharacterController cc;
     [SerializeField] private Transform root;
 
