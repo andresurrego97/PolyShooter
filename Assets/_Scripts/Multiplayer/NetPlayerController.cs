@@ -5,8 +5,10 @@ using UnityEngine;
 public class NetPlayerController : NetworkBehaviour
 {
     [Networked] public Teams Team { get; set; } = Teams.None;
-    public Transform root;
+    [Networked] public string NetName { get; set; }
 
+    [Space]
+    [SerializeField] private Transform root;
     [SerializeField] private NetRadiousColliderEvents circleCollider;
 
     [Space]
@@ -32,9 +34,10 @@ public class NetPlayerController : NetworkBehaviour
         radious.SetActive(false);
     }
 
-    public void Init(Teams team)
+    public void Init(Teams team, string name)
     {
         Team = team;
+        NetName = name;
     }
 
     public override void Spawned()

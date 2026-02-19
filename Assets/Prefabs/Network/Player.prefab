@@ -882,6 +882,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   _Team: 0
+  _NetName: 
   root: {fileID: 4135392840575816078}
   circleCollider: {fileID: 5328420689946135595}
   radious: {fileID: 1160532811263769967}

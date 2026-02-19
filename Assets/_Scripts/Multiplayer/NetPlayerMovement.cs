@@ -28,6 +28,9 @@ public class NetPlayerMovement : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
+        //if (!NetLobby.readyLobby)
+        //    return;
+
         switch (controller.Team)
         {
             case Teams.TeamA:
@@ -46,6 +49,9 @@ public class NetPlayerMovement : NetworkBehaviour
         }
 
         move.y = cc.isGrounded ? 0 : Physics.gravity.y;
+
+        if (!NetLobby.readyLobby)
+            return;
 
         cc.Move(move * Runner.DeltaTime);
     }

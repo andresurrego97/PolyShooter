@@ -11,6 +11,9 @@ public class NetPlayerActions : NetworkBehaviour
 
     private void Update()
     {
+        if (!NetLobby.readyLobby)
+            return;
+
         if (!HasStateAuthority)
             return;
 

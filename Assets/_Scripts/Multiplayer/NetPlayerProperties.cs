@@ -3,8 +3,7 @@ using System;
 
 public class NetPlayerProperties : NetworkBehaviour
 {
-    [Networked, OnChangedRender(nameof(HealthChanged))]
-    public int NetLife { get; set; } = 100;
+    [Networked, OnChangedRender(nameof(HealthChanged))] public int NetLife { get; set; } = 100;
     public Action OnLifeChange;
 
     private void HealthChanged()

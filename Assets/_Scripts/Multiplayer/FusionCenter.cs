@@ -6,21 +6,36 @@ using UnityEngine;
 
 public class FusionCenter : MonoBehaviour, INetworkRunnerCallbacks
 {
+    public static Action<NetPlayerController> OnPlayerJoin;
+
     [SerializeField] private NetworkRunner networkRunner;
 
     [Space]
     [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private GameObject playerCanvas;
 
     private Teams team = Teams.None;
+    private NetPlayerController netPlayer;
+    public string playername;
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
-        Debug.Log($"<b><color=white>OnPlayerJoined master({runner.IsSharedModeMasterClient})");
-
-        NetLobby.instance.Init(runner);
+        Debug.Log($"<b><color=white>OnPlayerJoined Master?({runner.IsSharedModeMasterClient})");
 
         if (player == networkRunner.LocalPlayer)
         {
+            networkRunner.Spawn(
+                    playerCanvas,
+                    Vector3.zero,
+                    Quaternion.identity,
+                    null,
+                    (netRunner, netObject) =>
+                    {
+                        netObject.GetComponent<NetLobby>().Init(runner);
+                    });
+
+            team = ((player.AsIndex & 1) == 0) ? Teams.TeamB : Teams.TeamA;
+
             networkRunner.Spawn(
                 playerPrefab,
                 Vector3.zero,
@@ -28,8 +43,10 @@ public class FusionCenter : MonoBehaviour, INetworkRunnerCallbacks
                 null,
                 (netRunner, netObject) =>
                 {
-                    team = ((player.AsIndex & 1) == 0) ? Teams.TeamB : Teams.TeamA;
-                    netObject.GetComponent<NetPlayerController>().Init(team);
+                    netPlayer = netObject.GetComponent<NetPlayerController>();
+                    netPlayer.Init(team, playername);
+
+                    OnPlayerJoin?.Invoke(netPlayer);
 
                     switch (team)
                     {

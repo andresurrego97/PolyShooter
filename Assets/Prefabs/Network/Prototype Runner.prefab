@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6112104364757133351
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3176852240388547640}
+  - component: {fileID: 3217006093082602460}
+  - component: {fileID: 6156258646381211822}
+  - component: {fileID: 2743888369943661242}
+  - component: {fileID: 7454825773048561419}
+  - component: {fileID: 1662058871446293886}
+  m_Layer: 0
+  m_Name: Prototype Runner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3176852240388547640
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6112104364757133351}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3217006093082602460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6112104364757133351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1199893898, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fusion.Runtime.dll::Fusion.NetworkRunner
+--- !u!114 &6156258646381211822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6112104364757133351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ca658211b8ce9a489ca4ea32e84f5e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FusionCenter
+  networkRunner: {fileID: 3217006093082602460}
+  playerPrefab: {fileID: 6196488130737375875, guid: d8a42ba0c8ee4194eabac0fea0b5bd04, type: 3}
+  playerCanvas: {fileID: 8610128379811417480, guid: 21bc0e1cec2dd8b46ac872c70c2c5916, type: 3}
+  playername: 
+--- !u!114 &2743888369943661242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6112104364757133351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d73b0a95be81246699cf0d9ecdc01863, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fusion.Unity::Fusion.EnableOnSingleRunner
+  PreferredRunner: 0
+  Components: []
+  _guid: 2b2956f8-c897-427e-
+--- !u!114 &7454825773048561419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6112104364757133351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90a93abf1a391964a94e5c139605105b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fusion.Unity::Fusion.NetworkSceneManagerDefault
+  IsSceneTakeOverEnabled: 1
+  LogSceneLoadErrors: 1
+  DestroySpawnedPrefabsOnSceneUnload: 1
+--- !u!114 &1662058871446293886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6112104364757133351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10533623ed629624c8acc6869f609bf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fusion.Unity::Fusion.NetworkObjectProviderDefault
+  DelayIfSceneManagerIsBusy: 1
