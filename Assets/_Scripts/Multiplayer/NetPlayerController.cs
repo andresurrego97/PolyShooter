@@ -27,6 +27,8 @@ public class NetPlayerController : NetworkBehaviour
 
     private int selectedTweenId = 0;
 
+    private GameObject preGameIcon;
+
     private void Awake()
     {
         selectedSprite.transform.localScale = Vector3.zero;
@@ -42,6 +44,8 @@ public class NetPlayerController : NetworkBehaviour
 
     public override void Spawned()
     {
+        NetLobby.instance.PlayerSpawn(this, out preGameIcon);
+
         switch (Team)
         {
             case Teams.TeamA:
@@ -55,6 +59,14 @@ public class NetPlayerController : NetworkBehaviour
 
         if (HasStateAuthority)
             radious.SetActive(true);
+    }
+
+    public override void Despawned(NetworkRunner runner, bool hasState)
+    {
+        Destroy(preGameIcon);
+        NetLobby.instance.PlayerDespawn(this);
+
+        base.Despawned(runner, hasState);
     }
 
     private void Update()

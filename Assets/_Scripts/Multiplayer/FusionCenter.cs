@@ -6,35 +6,33 @@ using UnityEngine;
 
 public class FusionCenter : MonoBehaviour, INetworkRunnerCallbacks
 {
-    public static Action<NetPlayerController> OnPlayerJoin;
-
     [SerializeField] private NetworkRunner networkRunner;
 
     [Space]
     [SerializeField] private GameObject playerPrefab;
-    [SerializeField] private GameObject playerCanvas;
 
     private Teams team = Teams.None;
-    private NetPlayerController netPlayer;
     public string playername;
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
-        Debug.Log($"<b><color=white>OnPlayerJoined Master?({runner.IsSharedModeMasterClient})");
+        Debug.Log($"<b><color=white>OnPlayerJoined {player} {runner.LocalPlayer} Master?({runner.IsSharedModeMasterClient})");
+
+        Debug.LogWarning(NetLobby.instance.players.Count);
+        Debug.LogWarning($"teamA {NetLobby.instance.teamA_count} teamB {NetLobby.instance.teamB_count}");
 
         if (player == networkRunner.LocalPlayer)
         {
-            networkRunner.Spawn(
-                    playerCanvas,
-                    Vector3.zero,
-                    Quaternion.identity,
-                    null,
-                    (netRunner, netObject) =>
-                    {
-                        netObject.GetComponent<NetLobby>().Init(runner);
-                    });
+            if (NetLobby.instance.players.Count == 0)
+            {
+                team = Teams.TeamA;
+            }
+            else
+            {
+                team = NetLobby.instance.teamA_count < NetLobby.instance.teamB_count ? Teams.TeamB : Teams.TeamA;
+            }
 
-            team = ((player.AsIndex & 1) == 0) ? Teams.TeamB : Teams.TeamA;
+            //team = ((player.AsIndex & 1) == 0) ? Teams.TeamB : Teams.TeamA;
 
             networkRunner.Spawn(
                 playerPrefab,
@@ -43,10 +41,7 @@ public class FusionCenter : MonoBehaviour, INetworkRunnerCallbacks
                 null,
                 (netRunner, netObject) =>
                 {
-                    netPlayer = netObject.GetComponent<NetPlayerController>();
-                    netPlayer.Init(team, playername);
-
-                    OnPlayerJoin?.Invoke(netPlayer);
+                    netObject.GetComponent<NetPlayerController>().Init(team, playername);
 
                     switch (team)
                     {

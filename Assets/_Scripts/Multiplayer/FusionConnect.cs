@@ -10,6 +10,7 @@ public class FusionConnect : MonoBehaviour
 
     [SerializeField] private GameObject runner;
     private GameObject _runner;
+    [SerializeField] private NetLobby playerCanvas;
 
     [Space]
     private NetworkRunner networkRunner;
@@ -40,6 +41,8 @@ public class FusionConnect : MonoBehaviour
         networkRunner = _runner.GetComponent<NetworkRunner>();
         networkSceneManager = _runner.GetComponent<NetworkSceneManagerDefault>();
         center = _runner.GetComponent<FusionCenter>();
+
+        Instantiate(playerCanvas).Init(networkRunner);
     }
 
     public void StartRoom()
@@ -78,6 +81,7 @@ public class FusionConnect : MonoBehaviour
     {
         networkRunner.Shutdown();
         canvasConnection.SetActive(true);
+
         InstantiateRunner();
     }
 }

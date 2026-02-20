@@ -50,7 +50,7 @@ public class NetPlayerMovement : NetworkBehaviour
 
         move.y = cc.isGrounded ? 0 : Physics.gravity.y;
 
-        if (!NetLobby.readyLobby)
+        if (!NetLobby.instance.Ready)
             return;
 
         cc.Move(move * Runner.DeltaTime);
