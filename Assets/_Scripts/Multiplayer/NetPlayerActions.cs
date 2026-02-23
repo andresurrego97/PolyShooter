@@ -11,7 +11,7 @@ public class NetPlayerActions : NetworkBehaviour
 
     private void Update()
     {
-        if (!NetLobby.instance.Ready)
+        if (NetLobbyExtensions.SpawnedNetLobby() && !NetLobby.instance.Ready)
             return;
 
         if (!HasStateAuthority)
@@ -26,7 +26,6 @@ public class NetPlayerActions : NetworkBehaviour
                     Object.InputAuthority,
                     (runner, o) =>
                     {
-                        // Initialize the Ball before synchronizing it
                         o.GetComponent<NetProjectile>().Init();
                     });
         }

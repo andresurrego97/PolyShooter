@@ -62,7 +62,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FusionCenter
   networkRunner: {fileID: 3217006093082602460}
   playerPrefab: {fileID: 6196488130737375875, guid: d8a42ba0c8ee4194eabac0fea0b5bd04, type: 3}
-  playerCanvas: {fileID: 8610128379811417480, guid: 21bc0e1cec2dd8b46ac872c70c2c5916, type: 3}
+  playerCanvasPrefab: {fileID: 8610128379811417480, guid: 21bc0e1cec2dd8b46ac872c70c2c5916, type: 3}
   playername: 
 --- !u!114 &2743888369943661242
 MonoBehaviour:

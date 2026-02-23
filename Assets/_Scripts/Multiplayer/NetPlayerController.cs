@@ -1,9 +1,11 @@
+using Cysharp.Threading.Tasks;
 using Fusion;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class NetPlayerController : NetworkBehaviour
 {
+    public bool teamSelected = false;
     [Networked] public Teams Team { get; set; } = Teams.None;
     [Networked] public string NetName { get; set; }
 
@@ -36,7 +38,7 @@ public class NetPlayerController : NetworkBehaviour
         radious.SetActive(false);
     }
 
-    public void Init(Teams team, string name)
+    public void Init(string name, Teams team)
     {
         Team = team;
         NetName = name;
@@ -44,6 +46,15 @@ public class NetPlayerController : NetworkBehaviour
 
     public override void Spawned()
     {
+        SpawnedDelayed().Forget();
+    }
+
+    private async UniTaskVoid SpawnedDelayed()
+    {
+        await UniTask.WaitUntil(NetLobbyExtensions.SpawnedNetLobby);
+
+        teamSelected = true;
+
         NetLobby.instance.PlayerSpawn(this, out preGameIcon);
 
         switch (Team)
@@ -63,8 +74,15 @@ public class NetPlayerController : NetworkBehaviour
 
     public override void Despawned(NetworkRunner runner, bool hasState)
     {
+        if (Runner.IsShutdown)
+            return;
+
         Destroy(preGameIcon);
-        NetLobby.instance.PlayerDespawn(this);
+
+        //if (Runner.IsSharedModeMasterClient && !NetLobby.instance.Object.HasStateAuthority)
+        //{
+        //    NetLobby.instance.Object.RequestStateAuthority(); //Reset NetLobby, Resets the timer
+        //}
 
         base.Despawned(runner, hasState);
     }

@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using Fusion;
 using UnityEngine;
 
@@ -20,6 +21,13 @@ public class NetPlayerMovement : NetworkBehaviour
 
     public override void Spawned()
     {
+        SpawnedDelayed().Forget();
+    }
+
+    private async UniTaskVoid SpawnedDelayed()
+    {
+        await UniTask.WaitUntil(() => controller.teamSelected);
+
         if (HasStateAuthority)
             CameraComposer.instance.Init(root, controller.Team);
 
@@ -48,9 +56,12 @@ public class NetPlayerMovement : NetworkBehaviour
             root.rotation = Quaternion.LookRotation(move, root.up);
         }
 
+        if (!cc.enabled)
+            return;
+
         move.y = cc.isGrounded ? 0 : Physics.gravity.y;
 
-        if (!NetLobby.instance.Ready)
+        if (NetLobbyExtensions.SpawnedNetLobby() && !NetLobby.instance.Ready)
             return;
 
         cc.Move(move * Runner.DeltaTime);

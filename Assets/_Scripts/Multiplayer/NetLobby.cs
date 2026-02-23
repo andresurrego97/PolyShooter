@@ -1,18 +1,22 @@
 using Fusion;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+
+public static class NetLobbyExtensions
+{
+    public static bool SpawnedNetLobby()
+    {
+        return NetLobby.instance != null && NetLobby.instance.spawned;
+    }
+}
 
 public class NetLobby : NetworkBehaviour
 {
     public static NetLobby instance;
 
     public bool Ready => spawned && ReadyLobby;
+    public bool spawned = false;
     [Networked] private bool ReadyLobby { get; set; }
-
-    public List<NetPlayerController> players = new();
-    [Networked] public int teamA_count { get; set; } = 0;
-    [Networked] public int teamB_count { get; set; } = 0;
 
     [Header("Pre Game")]
     [SerializeField] private GameObject canvasPreGame;
@@ -33,8 +37,6 @@ public class NetLobby : NetworkBehaviour
     [Networked] private TickTimer StartTimer { get; set; }
 
     private bool timerCreated = false;
-    private bool spawned = false;
-    private NetworkRunner networkRunner;
     private int prevSecondsLeft = -2;
     private int secondsLeft = -1;
 
@@ -48,30 +50,19 @@ public class NetLobby : NetworkBehaviour
         canvasInGame.SetActive(false);
     }
 
-    public void Init(NetworkRunner _runner)
-    {
-        networkRunner = _runner;
-        Debug.LogWarning("Init");
-    }
-
     public void PlayerSpawn(NetPlayerController controller, out GameObject preGameIcon)
     {
         preGameIcon = null;
-        players.Add(controller);
 
         switch (controller.Team)
         {
             case Teams.TeamA:
-                teamA_count += 1;
-
                 team = Instantiate(teamA, teamA.transform.parent);
                 team.GetComponentInChildren<TextMeshProUGUI>().text = controller.NetName;
                 preGameIcon = team;
                 break;
 
             case Teams.TeamB:
-                teamB_count += 1;
-
                 team = Instantiate(teamB, teamB.transform.parent);
                 team.GetComponentInChildren<TextMeshProUGUI>().text = controller.NetName;
                 preGameIcon = team;
@@ -81,16 +72,11 @@ public class NetLobby : NetworkBehaviour
         team.SetActive(true);
     }
 
-    public void PlayerDespawn(NetPlayerController netPlayerController)
-    {
-        players.Remove(netPlayerController);
-    }
-
     public override void Spawned()
     {
         spawned = true;
 
-        if (!StartTimer.Expired(networkRunner))
+        if (!StartTimer.Expired(Runner))
         {
             canvasPreGame.SetActive(true);
         }
@@ -98,18 +84,21 @@ public class NetLobby : NetworkBehaviour
         {
             canvasInGame.SetActive(true);
         }
+    }
 
-        Debug.LogWarning("Spawned");
+    public override void Despawned(NetworkRunner runner, bool hasState)
+    {
+        spawned = false;
+        base.Despawned(runner, hasState);
     }
 
     public override void FixedUpdateNetwork()
     {
-        if (networkRunner.IsSharedModeMasterClient && !timerCreated)
+        if (Runner.IsSharedModeMasterClient && !timerCreated)
         {
-            StartTimer = TickTimer.CreateFromSeconds(networkRunner, waitSeconds);
+            StartTimer = TickTimer.CreateFromSeconds(Runner, waitSeconds);
 
             timerCreated = true;
-            Debug.LogWarning("timerCreated");
         }
     }
 
@@ -118,7 +107,7 @@ public class NetLobby : NetworkBehaviour
         if (!spawned)
             return;
 
-        if (StartTimer.Expired(networkRunner))
+        if (StartTimer.Expired(Runner))
         {
             OnChangeSeconds(0);
             return;
@@ -127,7 +116,7 @@ public class NetLobby : NetworkBehaviour
         if (StartTimer.IsRunning)
         {
             OnChangeSeconds(
-                (((int)StartTimer.TargetTick - networkRunner.Tick) / networkRunner.TickRate) + 1);
+                (((int)StartTimer.TargetTick - Runner.Tick) / Runner.TickRate) + 1);
         }
     }
 

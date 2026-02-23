@@ -10,29 +10,22 @@ public class FusionCenter : MonoBehaviour, INetworkRunnerCallbacks
 
     [Space]
     [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private GameObject playerCanvasPrefab;
 
-    private Teams team = Teams.None;
     public string playername;
+
+    private Teams team;
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
-        Debug.Log($"<b><color=white>OnPlayerJoined {player} {runner.LocalPlayer} Master?({runner.IsSharedModeMasterClient})");
-
-        Debug.LogWarning(NetLobby.instance.players.Count);
-        Debug.LogWarning($"teamA {NetLobby.instance.teamA_count} teamB {NetLobby.instance.teamB_count}");
+        Debug.Log($"<b><color=white>OnPlayerJoined: {player} local: {runner.LocalPlayer}");
 
         if (player == networkRunner.LocalPlayer)
         {
-            if (NetLobby.instance.players.Count == 0)
+            if (player.AsIndex == 1)
             {
-                team = Teams.TeamA;
+                networkRunner.Spawn(playerCanvasPrefab);
             }
-            else
-            {
-                team = NetLobby.instance.teamA_count < NetLobby.instance.teamB_count ? Teams.TeamB : Teams.TeamA;
-            }
-
-            //team = ((player.AsIndex & 1) == 0) ? Teams.TeamB : Teams.TeamA;
 
             networkRunner.Spawn(
                 playerPrefab,
@@ -41,7 +34,9 @@ public class FusionCenter : MonoBehaviour, INetworkRunnerCallbacks
                 null,
                 (netRunner, netObject) =>
                 {
-                    netObject.GetComponent<NetPlayerController>().Init(team, playername);
+                    team = (player.AsIndex & 1) == 0 ? Teams.TeamB : Teams.TeamA;
+
+                    netObject.GetComponent<NetPlayerController>().Init(playername, team);
 
                     switch (team)
                     {
@@ -61,7 +56,7 @@ public class FusionCenter : MonoBehaviour, INetworkRunnerCallbacks
     public void OnConnectedToServer(NetworkRunner runner)
 #pragma warning restore UNT0006 // Incorrect message signature
     {
-        Debug.Log("<b><color=white>OnConnectedToServer");
+        Debug.Log($"<b><color=white>OnConnectedToServer Master: {runner.IsSharedModeMasterClient}");
     }
 
     public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason)
@@ -113,7 +108,7 @@ public class FusionCenter : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
-        Debug.Log("<b><color=white>OnPlayerLeft");
+        Debug.Log($"<b><color=white>OnPlayerLeft: {player}");
     }
 
     public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress)
@@ -143,7 +138,7 @@ public class FusionCenter : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
     {
-        Debug.Log("<b><color=white>OnShutdown");
+        Debug.Log($"<b><color=white>OnShutdown Reason: {shutdownReason}");
     }
 
     public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message)
